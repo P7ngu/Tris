@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @EnvironmentObject var game: GameService
     @State private var gameType: GameType = .undetermined
     @State private var yourName = ""
     @State private var opponentName = ""
@@ -102,4 +103,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
+        .environmentObject(GameService())
 }

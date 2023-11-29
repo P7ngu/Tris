@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct TrisApp: App {
+    @StateObject var game = GameService()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -26,6 +28,8 @@ struct TrisApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(game)
+            //we set the game here, so that it can be passed anywhere using the environment
         }
         .modelContainer(sharedModelContainer)
     }

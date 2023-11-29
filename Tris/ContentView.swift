@@ -12,62 +12,73 @@ struct ContentView: View {
     @State private var gameType: GameType = .undetermined
     @State private var yourName = ""
     @State private var opponentName = ""
+    @State private var startGame = false
     @FocusState private var focus: Bool //for the keyboard dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
 
     var body: some View {
-        VStack{
-            Picker("Select game", selection: $gameType){
-                Text("Select game type").tag(GameType.undetermined)
-                Text("Share one device").tag(GameType.single)
-                Text("Challenge an AI").tag(GameType.bot)
-                Text("Challenge a friend").tag(GameType.peer)
-            }
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(lineWidth: 2))
-            .accentColor(.primary)
-            
-            Text(gameType.description)
-                .padding()
-            
+        NavigationStack{
             VStack{
-                switch gameType {
-                case .single:
-                    VStack{
+                Picker("Select game", selection: $gameType){
+                    Text("Select game type").tag(GameType.undetermined)
+                    Text("Share one device").tag(GameType.single)
+                    Text("Challenge an AI").tag(GameType.bot)
+                    Text("Challenge a friend").tag(GameType.peer)
+                }
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(lineWidth: 2))
+                //.accentColor(.primary)
+                
+                Text(gameType.description)
+                    .padding()
+                
+                VStack{
+                    switch gameType {
+                    case .single:
+                        VStack{
+                            TextField("Your Name", text: $yourName)
+                            TextField("Opponent Name", text: $opponentName)
+                        }
+                    case .bot:
                         TextField("Your Name", text: $yourName)
-                        TextField("Opponent Name", text: $opponentName)
+                    case .peer:
+                        EmptyView()
+                    case .undetermined:
+                        EmptyView()
                     }
-                case .bot:
-                    TextField("Your Name", text: $yourName)
-                case .peer:
-                    EmptyView()
-                case .undetermined:
-                    EmptyView()
                 }
-            }
+                .padding()
+                .textFieldStyle(.roundedBorder)
+                .focused($focus)
+                .frame(width: 350)
+                
+                if gameType != .peer {
+                    Button("Start Game"){
+                        focus = false
+                        startGame.toggle()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(
+                        gameType == .undetermined ||
+                        gameType == . bot && yourName.isEmpty ||
+                        gameType == .single &&
+                        (yourName.isEmpty || opponentName.isEmpty)
+                    )
+                    Image("LaunchScreen")
+                }
+                Spacer()
+                
+                
+            } 
             .padding()
-            .textFieldStyle(.roundedBorder)
-            .focused($focus)
-            .frame(width: 350)
-            
-            if gameType != .peer {
-                Button("Start Game"){
-                    focus = false
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(
-                    gameType == .undetermined ||
-                    gameType == . bot && yourName.isEmpty ||
-                    gameType == .single &&
-                    (yourName.isEmpty || opponentName.isEmpty)
-                )
-                Image("LaunchScreen")
+            .navigationTitle("Xs or Os")
+            .fullScreenCover(isPresented: $startGame) {
+                GameView()
             }
-            Spacer()
-            
-            
-        }  .padding()
+            .inNavigationStack()
+        }
+        
         
     }
       

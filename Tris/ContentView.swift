@@ -9,35 +9,68 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @State private var gameType: GameType = .undetermined
+    @State private var yourName = ""
+    @State private var opponentName = ""
+    @FocusState private var focus: Bool //for the keyboard dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        VStack{
+            Picker("Select game", selection: $gameType){
+                Text("Select game type").tag(GameType.undetermined)
+                Text("Share one device").tag(GameType.single)
+                Text("Challenge an AI").tag(GameType.bot)
+                Text("Challenge a friend").tag(GameType.peer)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(lineWidth: 2))
+            .accentColor(.primary)
+            
+            Text(gameType.description)
+                .padding()
+            
+            VStack{
+                switch gameType {
+                case .single:
+                    VStack{
+                        TextField("Your Name", text: $yourName)
+                        TextField("Opponent Name", text: $opponentName)
                     }
+                case .bot:
+                    TextField("Your Name", text: $yourName)
+                case .peer:
+                    EmptyView()
+                case .undetermined:
+                    EmptyView()
                 }
             }
-        } detail: {
-            Text("Select an item")
-        }
+            .padding()
+            .textFieldStyle(.roundedBorder)
+            .focused($focus)
+            .frame(width: 350)
+            
+            if gameType != .peer {
+                Button("Start Game"){
+                    focus = false
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(
+                    gameType == .undetermined ||
+                    gameType == . bot && yourName.isEmpty ||
+                    gameType == .single &&
+                    (yourName.isEmpty || opponentName.isEmpty)
+                )
+                Image("LaunchScreen")
+            }
+            Spacer()
+            
+            
+        }  .padding()
+        
     }
+      
 
     private func addItem() {
         withAnimation {

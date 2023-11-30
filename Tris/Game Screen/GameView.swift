@@ -29,6 +29,44 @@ struct GameView: View {
                 .buttonStyle(PlayerButtonStyle(isCurrent: game.player2.isCurrent))
             }
             .disabled(game.gameStarted)
+            
+            VStack{
+                HStack{
+                    ForEach(0...2, id: \.self){ index in
+                        SquareView(index: index)
+                    }
+                }
+                HStack{
+                    ForEach(3...5, id: \.self){ index in
+                        SquareView(index: index)
+                    }
+                }
+
+                HStack{
+                    ForEach(6...8, id: \.self){ index in
+                        SquareView(index: index)
+                    }
+                }
+
+            }
+            .disabled(game.boardDisabled)
+            
+            VStack{
+                if game.gameOver{
+                    Text("Game Over")
+                    if game.possibleMoves.isEmpty {
+                        Text("Nobody wins :(")
+                    } else {
+                        Text("\(game.currentPlayer.name) wins!")
+                    }
+                    Button("New Game"){
+                        game.reset()
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            }
+                
+           // .font(.largeTitle)
             Spacer()
         }
         .toolbar {
@@ -40,6 +78,9 @@ struct GameView: View {
             }
         }
         .navigationTitle("Game")
+        .onAppear(){
+            game.reset()
+        }
         .inNavigationStack() //embeds everything inside of a navigation stack as specified in the viewmodifier
     }
 }

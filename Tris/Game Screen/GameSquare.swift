@@ -25,7 +25,7 @@ struct GameSquare{
         var squares = [GameSquare]()
         
         for index in 1...9{
-            square.append(GameSquare(id: index))
+            squares.append(GameSquare(id: index))
         }
         
         return squares

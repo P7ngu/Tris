@@ -56,6 +56,7 @@ struct ContentView: View {
                 
                 if gameType != .peer {
                     Button("Start Game"){
+                        game.setupGame(gameType: gameType, player1name: yourName, player2name: opponentName)
                         focus = false
                         startGame.toggle()
                     }

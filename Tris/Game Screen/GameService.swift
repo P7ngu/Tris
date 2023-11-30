@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 //Since all of this is needed to update the UI
@@ -69,6 +70,46 @@ class GameService: ObservableObject{
         gameBoard = GameSquare.reset
         
         
+    }
+    
+    func updateMoves(index: Int){
+        if player1.isCurrent{
+            player1.moves.append(index+1)
+            gameBoard[index].player = player1
+        } else {
+            player2.moves.append(index+1)
+            gameBoard[index].player = player2
+        }
+    }
+    
+    func checkIfWinner(){
+        if player1.isWinner || player2.isWinner{
+            gameOver = true
+        }
+    }
+    
+    
+    func toggleCurrent(){
+        player1.isCurrent.toggle()
+        player2.isCurrent.toggle()
+    }
+    
+    func makeMove(at index: Int){
+        if gameBoard[index].player == nil{
+            withAnimation{
+                updateMoves(index: index)
+            }
+            checkIfWinner()
+            if !gameOver {
+                if let matchingIndex = possibleMoves.firstIndex(where: { $0 == (index+1)}) {
+                    possibleMoves.remove(at: matchingIndex)
+                }
+                toggleCurrent()
+            }
+            if possibleMoves.isEmpty{
+                gameOver = true
+            }
+        }
     }
     
 }

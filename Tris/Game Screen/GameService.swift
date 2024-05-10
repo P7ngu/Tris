@@ -23,6 +23,9 @@ class GameService: ObservableObject{
     @Published var possibleMoves = Move.all
     @Published var gameOver = false
     
+    //To display the progress bar
+    @Published var isThinking = false
+    
     //a simple var since it is not subject to change, unlike the other properties
     var gameType = GameType.single
     
@@ -39,7 +42,7 @@ class GameService: ObservableObject{
     }
     
     var boardDisabled: Bool{
-        gameOver || !gameStarted
+        gameOver || !gameStarted || isThinking
     }
     
     
@@ -50,6 +53,7 @@ class GameService: ObservableObject{
             player2.name = player2name
         case .bot:
             self.gameType = .bot
+            player2.name = UIDevice.current.name
         case .peer:
             self.gameType = .peer
         case .undetermined:
@@ -105,11 +109,27 @@ class GameService: ObservableObject{
                     possibleMoves.remove(at: matchingIndex)
                 }
                 toggleCurrent()
+                if gameType == .bot && currentPlayer.name == player2.name {
+                    Task { //Async
+                        await deviceMove()
+                    }
+                }
             }
             if possibleMoves.isEmpty{
                 gameOver = true
             }
         }
+    }
+    
+    func deviceMove() async {
+        isThinking.toggle()
+        try? await Task.sleep(nanoseconds: 1_000_000_000) //Sleep
+        if let move = possibleMoves.randomElement() {
+            if let matchingIndex = Move.all.firstIndex(where: {$0 == move}){
+                makeMove(at: matchingIndex)
+            }
+        }
+        isThinking.toggle()
     }
     
 }

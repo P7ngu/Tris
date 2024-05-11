@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		631BBD9A2BEF7F9200BEF681 /* YourNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631BBD992BEF7F9200BEF681 /* YourNameView.swift */; };
 		6323CE452B171D2C00E501B1 /* TrisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6323CE442B171D2C00E501B1 /* TrisApp.swift */; };
 		6323CE472B171D2C00E501B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6323CE462B171D2C00E501B1 /* ContentView.swift */; };
 		6323CE492B171D2C00E501B1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6323CE482B171D2C00E501B1 /* Item.swift */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		631BBD982BEE9E8200BEF681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		631BBD992BEF7F9200BEF681 /* YourNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourNameView.swift; sourceTree = "<group>"; };
 		6323CE412B171D2C00E501B1 /* Tris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tris.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6323CE442B171D2C00E501B1 /* TrisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrisApp.swift; sourceTree = "<group>"; };
 		6323CE462B171D2C00E501B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,6 +71,7 @@
 		6323CE432B171D2C00E501B1 /* Tris */ = {
 			isa = PBXGroup;
 			children = (
+				631BBD982BEE9E8200BEF681 /* Info.plist */,
 				6323CE5F2B174D5800E501B1 /* GamePlanning.playground */,
 				6323CE5C2B174AC800E501B1 /* Game Screen */,
 				6323CE562B17219C00E501B1 /* Models */,
@@ -77,6 +81,7 @@
 				6323CE4A2B171D2D00E501B1 /* Assets.xcassets */,
 				6323CE542B171FD000E501B1 /* Launch Screen.storyboard */,
 				6323CE4C2B171D2D00E501B1 /* Preview Content */,
+				631BBD992BEF7F9200BEF681 /* YourNameView.swift */,
 			);
 			path = Tris;
 			sourceTree = "<group>";
@@ -196,6 +201,7 @@
 				6323CE5E2B174ADA00E501B1 /* GameView.swift in Sources */,
 				6323CE652B1756CC00E501B1 /* SquareView.swift in Sources */,
 				6323CE632B1755DC00E501B1 /* GameSquare.swift in Sources */,
+				631BBD9A2BEF7F9200BEF681 /* YourNameView.swift in Sources */,
 				6323CE452B171D2C00E501B1 /* TrisApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -333,6 +339,8 @@
 				DEVELOPMENT_TEAM = 5Y7P52GGAD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tris/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Used to detect other devices to play with.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -364,6 +372,8 @@
 				DEVELOPMENT_TEAM = 5Y7P52GGAD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tris/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Used to detect other devices to play with.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

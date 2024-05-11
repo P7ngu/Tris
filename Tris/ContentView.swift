@@ -11,12 +11,18 @@ import SwiftData
 struct ContentView: View {
     @EnvironmentObject var game: GameService
     @State private var gameType: GameType = .undetermined
-    @State private var yourName = ""
+    @AppStorage ("yourName") private var yourName = ""
     @State private var opponentName = ""
     @State private var startGame = false
     @FocusState private var focus: Bool //for the keyboard dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    @State private var changeName = false
+    @State private var newName = ""
+    
+    init(yourName:String) {
+        self.yourName = yourName
+    }
 
     var body: some View {
         NavigationStack{
@@ -38,11 +44,11 @@ struct ContentView: View {
                     switch gameType {
                     case .single:
                         VStack{
-                            TextField("Your Name", text: $yourName)
+                           
                             TextField("Opponent Name", text: $opponentName)
                         }
                     case .bot:
-                        TextField("Your Name", text: $yourName)
+                      EmptyView()
                     case .peer:
                         EmptyView()
                     case .undetermined:
@@ -63,11 +69,15 @@ struct ContentView: View {
                     .buttonStyle(.borderedProminent)
                     .disabled(
                         gameType == .undetermined ||
-                        gameType == . bot && yourName.isEmpty ||
                         gameType == .single &&
-                        (yourName.isEmpty || opponentName.isEmpty)
+                        (opponentName.isEmpty)
                     )
                     Image("LaunchScreen")
+                    Text("Your name is \(yourName)")
+                    Button("Change my name"){
+                        changeName.toggle()
+                    }
+                    .buttonStyle(.bordered)
                 }
                 Spacer()
                 
@@ -78,6 +88,16 @@ struct ContentView: View {
             .fullScreenCover(isPresented: $startGame) {
                 GameView()
             }
+            .alert("Change Name", isPresented: $changeName, actions: {
+                TextField("New name", text: $newName)
+                Button("OK", role: .destructive) {
+                    yourName = newName
+                    exit(-1)
+                }
+                Button("Cancel", role: .cancel) {}
+            }, message: {
+                Text("Tapping on the OK button will quit the App so you can relaunch with your new, changed name.")
+            })
             .inNavigationStack()
         }
         
@@ -102,7 +122,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(yourName: "Testing")
         .modelContainer(for: Item.self, inMemory: true)
         .environmentObject(GameService())
 }

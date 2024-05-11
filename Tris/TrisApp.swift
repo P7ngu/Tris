@@ -10,27 +10,20 @@ import SwiftData
 
 @main
 struct TrisApp: App {
+    @AppStorage("yourName") var yourName = ""
     @StateObject var game = GameService()
-    
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(game)
-            //we set the game here, so that it can be passed anywhere using the environment
+            if yourName.isEmpty{
+                YourNameView()
+            } else {
+                ContentView(yourName: yourName)
+                    .environmentObject(game)
+                //we set the game here, so that it can be passed anywhere using the environment
+            }
         }
-        .modelContainer(sharedModelContainer)
+       
     }
 }

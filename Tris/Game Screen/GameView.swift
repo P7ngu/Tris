@@ -10,6 +10,8 @@ import SwiftUI
 struct GameView: View {
     @EnvironmentObject var game: GameService
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject var connectionManager: MPConnectionManager
     var body: some View {
         VStack{
             if[game.player1.isCurrent,game.player2.isCurrent].allSatisfy{ $0 == false } {
@@ -95,6 +97,9 @@ struct GameView: View {
         .navigationTitle("Game")
         .onAppear(){
             game.reset()
+            if game.gameType == .peer {
+                connectionManager.setup(game: game)
+            }
         }
         .inNavigationStack() //embeds everything inside of a navigation stack as specified in the viewmodifier
     }
@@ -103,6 +108,7 @@ struct GameView: View {
 #Preview {
     GameView()
         .environmentObject(GameService())
+        .environmentObject(MPConnectionManager(yourName: "TestingStuff"))
 }
 
 

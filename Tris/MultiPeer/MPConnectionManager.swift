@@ -150,7 +150,6 @@ extension MPConnectionManager: MCSessionDelegate {
                 case .move:
                     let index = gameMove.index
                         self.game?.makeMove(at: index)
-                    
                 case .reset:
                     self.game?.reset()
                 case .end:
@@ -163,15 +162,15 @@ extension MPConnectionManager: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        <#code#>
+        //
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        <#code#>
+        //
     }
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: (any Error)?) {
-        <#code#>
+        //
     }
     
     

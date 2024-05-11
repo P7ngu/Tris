@@ -20,8 +20,12 @@ struct ContentView: View {
     @State private var changeName = false
     @State private var newName = ""
     
+    //For connection purposes, to have it in all subviews, must add it as an environment object
+    @StateObject var connectionManager: MPConnectionManager
+    
     init(yourName:String) {
         self.yourName = yourName
+        _connectionManager = StateObject(wrappedValue: MPConnectionManager(yourName: yourName))
     }
 
     var body: some View {
@@ -87,6 +91,7 @@ struct ContentView: View {
             .navigationTitle("Xs or Os")
             .fullScreenCover(isPresented: $startGame) {
                 GameView()
+                    .environmentObject(connectionManager) //injected connection manager into the environment, do it also in the gameview 
             }
             .alert("Change Name", isPresented: $changeName, actions: {
                 TextField("New name", text: $newName)

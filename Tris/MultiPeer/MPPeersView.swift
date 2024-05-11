@@ -47,6 +47,20 @@ struct MPPeersView: View {
                     }
                 }
             }
+            .onAppear() {
+                connectionManager.isAvailableToPlay = true
+                connectionManager.startBrowsing()
+            }
+            
+            .onDisappear() {
+                connectionManager.stopBrowsing()
+                connectionManager.stopAdvertising()
+                connectionManager.isAvailableToPlay = false
+            }
+            
+            .onChange(of: connectionManager.paired) { newValue in
+               startGame = newValue
+            }
         }
     }
 }

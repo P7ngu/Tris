@@ -48,13 +48,13 @@ struct ContentView: View {
                     switch gameType {
                     case .single:
                         VStack{
-                           
                             TextField("Opponent Name", text: $opponentName)
                         }
                     case .bot:
                       EmptyView()
                     case .peer:
-                        EmptyView()
+                        MPPeersView(startGame: $startGame)
+                            .environmentObject(connectionManager)
                     case .undetermined:
                         EmptyView()
                     }
